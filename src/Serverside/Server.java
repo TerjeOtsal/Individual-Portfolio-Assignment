@@ -1,16 +1,17 @@
 package Serverside;
 
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
+
 
 import static java.lang.System.*;
 
@@ -35,7 +36,7 @@ public class Server {
                 if (clientsList.isEmpty()) {
                     out.println("SERVER : Waiting for bot!");
                 }
-
+                //accepts connection
                 Socket s = serverSocket.accept();
 
                 out.println("A bot have joined the room " + s.getRemoteSocketAddress());
@@ -51,7 +52,7 @@ public class Server {
         }
     }
 
-
+// an input method that reads the Inputstream
     static class input implements Runnable {
         // inputStream
         final ThreadLocal<BufferedReader> inputStream = ThreadLocal.withInitial(() ->
@@ -82,7 +83,7 @@ public class Server {
                         out.println("Host :" + msgForClient);
                     }
 
-                    CopyOnWriteArrayList<client> arrayListClients = client.getArrayListClients();
+                    CopyOnWriteArrayList<client> arrayListClients = client.getArrayListOffClients();
                     for (int i = 0; i < arrayListClients.size(); i++) {
                         client client = arrayListClients.get(i);
                         client.outputStream.println(new StringBuilder().append("Host: ").append(msgForClient.toLowerCase()).toString());
@@ -105,18 +106,18 @@ public class Server {
         public client(Socket Socket, CopyOnWriteArrayList<client> ListClients) throws IOException {
 
             this.socket = Socket;
-            Server.client.setArrayListClients(ListClients);
+            Server.client.setArrayListOffClients(ListClients);
 
             InputStream.set(new BufferedReader(new InputStreamReader(socket.getInputStream())));
             outputStream = new PrintWriter(socket.getOutputStream(), true);
         }
 
-        public static CopyOnWriteArrayList<client> getArrayListClients() {
+        public static CopyOnWriteArrayList<client> getArrayListOffClients() {
             return arrayBots;
         }
 
-        public static void setArrayListClients(CopyOnWriteArrayList<client> arrayListClients) {
-            Server.client.arrayBots = arrayListClients;
+        public static void setArrayListOffClients(CopyOnWriteArrayList<client> arrayListOffClients) {
+            Server.client.arrayBots = arrayListOffClients;
         }
 
         @Override
@@ -147,7 +148,7 @@ public class Server {
 
         // Function that prints the client output stream
         private void send(String msg) {
-            CopyOnWriteArrayList<Server.client> arrayListClients = getArrayListClients();
+            CopyOnWriteArrayList<Server.client> arrayListClients = getArrayListOffClients();
             for (Server.client client : arrayListClients) {
 
                 if (!(client.socket == this.socket)) {

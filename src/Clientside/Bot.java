@@ -7,7 +7,7 @@ class List {
     // one list for availble bots and one for the bots that are picked
     public ArrayList<String> availableBots = new ArrayList<>();
     public ArrayList<String> usedBots = new ArrayList<>();
-
+// adds the bots to the availble list
     public void addBots() {
         availableBots.add("Karl");
         availableBots.add("Jenny");
@@ -26,12 +26,12 @@ class List {
     }
 }
 
-
+//bot class
 public class Bot {
 
     private String[] keyWords;
 
-    {
+    {// a set of keywords that the bots will look for, the bot is very shallow now but could be deeper by adding more
         keyWords = new String[]{"dance", "drink", "walk", "run", "travel"};
     }
 
@@ -81,7 +81,7 @@ public class Bot {
 
 
     }
-    // each bot has their own sets of replies
+    // each bot has their own sets of replies that "activates" if a keyword has been found shown by a foundKeyBoolean
     private void marteBot() {
 
         if (foundKeyBoolean) {
@@ -109,7 +109,7 @@ public class Bot {
             };
             setAnswer(array[randomNumber]);
         } else {
-            setAnswer("What do you want? I dont understand!");
+            setAnswer("What do you want? I don't understand!");
         }
 
     }
@@ -121,11 +121,11 @@ public class Bot {
                     foundKey + "ing " + "is not cool enough!",
                     "I have better plans than " + foundKey+"ing",
                     "I don't want to " + foundKey + ", let's do something cool",
-                    "I really don't want to do " + foundKey +"ing" + " with you."
+                    "I really don't want to do " + foundKey +"ing"+" with you."
             };
             setAnswer(array[randomNumber]);
         } else {
-            setAnswer("Sorry didn't catch that, you were trying to say?");
+            setAnswer("Sorry didn't catch that,what are you trying to say?");
         }
 
     }
@@ -144,9 +144,9 @@ public class Bot {
             setAnswer("That doesn't make any sense");
         }
     }
-
-    public void KeywordFinder(String stringFrClient) {
-        String[] array = stringFrClient.split("[ ,?]");
+// method for finding keywords
+    public void KeywordFinder(String stringForClient) {
+        String[] array = stringForClient.split("[ ,?]");
 
         for (String key : keyWords) {
             for (String s : array) {
