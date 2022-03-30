@@ -20,7 +20,8 @@ public class Server {
     //Copy on write arrays have operations like add and set that are implemented by making a new copy of the array
     // therefore the name copy on write
     public static CopyOnWriteArrayList<client> clientsList = new CopyOnWriteArrayList<>();
-
+// creates a pool of threads with 4 possible threads if an extra task is put in while 4 threads are active it will
+    // wait in a queue
     static final ThreadLocal<ExecutorService> pool = ThreadLocal.withInitial(() ->
             Executors.newFixedThreadPool(4));
 
@@ -32,20 +33,20 @@ public class Server {
             out.println("WELCOME");
 // do while loop for getting the clients connected. important that it is a while loop as it needs to be open continuously
             do {
-
+// waiting for bot
                 if (clientsList.isEmpty()) {
                     out.println("SERVER : Waiting for bot!");
                 }
                 //accepts connection
                 Socket s = serverSocket.accept();
-
+// message to show a bot has joined
                 out.println("A bot have joined the room " + s.getRemoteSocketAddress());
 
 
                 client serverClient = new client(s, clientsList);
 
                 clientsList.add(serverClient);
-
+// adds server client to the pool of threads
                 pool.get().execute(serverClient);
 
             } while (true);
@@ -73,16 +74,16 @@ public class Server {
                     msgForClient = inputStream.get().readLine();
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                } // if message sent is exit it will close client
                 if (Objects.equals(msgForClient, "exit")) {
                     exit(0);
                 }
-
+// writes out message from host
                 if (!Objects.requireNonNull(msgForClient).isBlank() && !clientsList.isEmpty()) {
                     if (!msgForClient.startsWith("kick")) {
                         out.println("Host :" + msgForClient);
                     }
-
+// sends message from server to the different clients in the list
                     CopyOnWriteArrayList<client> arrayListClients = client.getArrayListOffClients();
                     for (int i = 0; i < arrayListClients.size(); i++) {
                         client client = arrayListClients.get(i);
