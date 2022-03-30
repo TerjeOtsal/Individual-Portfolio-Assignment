@@ -40,14 +40,14 @@ public class Bot {
     private boolean foundKeyBoolean = false;
 
     private Random randomGen = new Random();
-    private int randomNumber = randomGen.nextInt();
+    private int randomNumber = randomGen.nextInt(4);
 
     public Bot(String stringClient, String botName) {
 
         String[] greet = {"hey", "hello", "hi", "what's up"};
         for (String s : greet) {
             if (stringClient.contains(s)) {
-                setAnswer("Hello there!");
+                setAnswer("Hello good sir/mam!");
             }
         }
 
@@ -87,7 +87,7 @@ public class Bot {
         if (foundKeyBoolean) {
             String[] array = {
                     foundKey + "ing might be my favorite thing to do!",
-                    "Yes let's do " + foundKey, "I really want to "+foundKey+" right now!",
+                     "I really want to "+foundKey+" right now!",
                     "I really don't like " + foundKey + ", let's do something else please",
                     "I would love to go " + foundKey +"ing" + " with you!"
             };
@@ -104,8 +104,7 @@ public class Bot {
                     foundKey + "ing " + "is the funniest thing i know!",
                     "Yes let's do " + foundKey +" right now!!",
                     "Awww, I can't" + foundKey + ", but i really want to "+foundKey+
-                            "with you tomorrow!",
-                    "YEEES!!I want to do " + foundKey +"ing" + " with you."
+                            " with you tomorrow!", "I always laugw while I "+ foundKey
             };
             setAnswer(array[randomNumber]);
         } else {

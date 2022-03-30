@@ -95,7 +95,7 @@ public class Client {
 
         for (String bot : availableBots) {
             if (bot.equals(start)) {
-                Client localhost = new Client("127.0.0.1", 9090, start);
+                Client localhost = new Client("127.0.0.1", 9091, start);
                 list.BotUsed(bot);
                 break;
             }
